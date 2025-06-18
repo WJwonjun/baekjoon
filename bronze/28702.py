@@ -12,4 +12,4 @@ else:
     if target_num%5==0:
         print('Buzz')
     else:
-        print(target_num)
+        print(target_num) 
