@@ -2,16 +2,16 @@ import sys
 data = sys.stdin.read()
 T = int(data[0])
 nums = list(map(int,data[1:].split()))
-def fib(num,zero_count,one_count):
-    if num==0:
-        zero_count+=1
-    elif num==1:
-        one_count+=1
-    else:
-        zero_count, one_count = fib(num-1,zero_count,one_count)
-        zero_count, one_count = fib(num-2,zero_count,one_count)
-    return zero_count, one_count
+max_num = max(nums)
+
+dp = [[0, 0] for _ in range(max_num + 1)]
+dp[0] = [0,1]
+if max_num>=1:
+    dp[1] = [1,0]
+    
+for i in range(2, max_num + 1):
+    dp[i][0] = dp[i-1][0] + dp[i-2][0]
+    dp[i][1] = dp[i-1][1] + dp[i-2][1]
 
 for num in nums:
-    z, o = fib(num,0,0)
-    print(z,o)
+    print(dp[num][0], dp[num][1])

@@ -1,30 +1,20 @@
 import sys
-M = int(input())
-S = set()
-all_set = set(range(1,21))
-output = []
-for i in range(M):
-    command = sys.stdin.readline().split()
-    if command[0] =='add':
-            S.add(int(command[1]))
-            
-    elif command[0] =='remove':
-            S.discard(int(command[1]))
-    
-    elif command[0] == 'check':
-        output.append('1\n' if int(command[1]) in S else '0\n')
-    
-    elif command[0] =='toggle':
-        num = int(command[1])
-        if num in S:
-            S.remove(num)
-        else:
-            S.add(num)
-    
-    elif command[0] == 'all':
-        S = all_set.copy()
+input = sys.stdin.readline
 
-    elif command[0] =='empty':
-        S.clear()
-        
-sys.stdout.write(''.join(output))   
+m = int(input())
+s = 0
+for _ in range(m):
+    cmd = input().split()
+    
+    if cmd[0] == 'add':
+        s |= (1 << int(cmd[1]))
+    elif cmd[0] == 'remove':
+        s &= ~(1 << int(cmd[1]))    
+    elif cmd[0] == 'check':
+        print(1 if s & (1 << int(cmd[1])) else 0)
+    elif cmd[0] == 'toggle':
+        s ^= (1 << int(cmd[1]))
+    elif cmd[0] == 'all':
+        s = (1 << 21) - 1  # 1~20까지: 21번째 비트까지 채움
+    elif cmd[0] == 'empty':
+        s = 0
