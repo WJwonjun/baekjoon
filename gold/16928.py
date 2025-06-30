@@ -29,7 +29,7 @@ while Q:
             if not visited[next]:
                 if next==100:
                     print(count+1)
-                    sys.exit(0)
+                    sys.exit(1)
                 Q.append(next)
                 visited[next] = True
     count+=1       
