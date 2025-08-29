@@ -1,41 +1,23 @@
 import sys
 input = sys.stdin.readline
+
 N = int(input())
+A = list(map(int, input().split()))  # 문제 보장: 오름차순 정렬
 
-liquids = list(map(int,input().split()))
-for i in range(len(liquids)-1):
-    if liquids[i]*liquids[i+1]<0:
-        break
+i, j = 0, N - 1
+best = 10**19
+ansL, ansR = A[i], A[j]
 
-neg = list(reversed(liquids[:i+1]))
-pos = liquids[i+1:]
-k=0
-min_num = float('1e9')
-if len(neg)>=2:
-    min_num = neg[0]+neg[1]
-    x,y = neg[1],neg[0]
-if len(pos)>=2:
-    min_pos = pos[0]+pos[1]
-    if abs(min_num)>min_pos:
-        min_num = min_pos
-        x,y = pos[0],pos[1]
-
-
-for i in range(len(neg)):
-    while k<len(pos)-1:
-        if (neg[i]+pos[k])*(neg[i]+pos[k+1])<=0:
-            if abs(neg[i]+pos[k])<min_num and abs(neg[i]+pos[k])<abs(neg[i]+pos[k+1]):
-                x,y = neg[i],pos[k]
-                min_num = abs(neg[i]+pos[k])
-            elif abs(neg[i]+pos[k+1])<min_num and abs(neg[i]+pos[k+1])<abs(neg[i]+pos[k]):
-                x,y = neg[i],pos[k+1]
-                min_num = abs(neg[i]+pos[k+1])
-            
+while i < j:
+    s = A[i] + A[j]
+    if abs(s) < best:
+        best = abs(s)
+        ansL, ansR = A[i], A[j]
+        if best == 0:  # 더 좋아질 수 없음
             break
-        k+=1
-    
+    if s < 0:
+        i += 1   # 합이 음수면 더 크게(오른쪽) 이동
     else:
-        if abs(neg[i]+pos[k])<abs(min_num):
-            x,y = neg[i],pos[k]
-            min_num = abs(neg[i]+pos[k])
-print(x,y)
+        j -= 1   # 합이 양수면 더 작게(왼쪽) 이동
+
+print(ansL, ansR)
