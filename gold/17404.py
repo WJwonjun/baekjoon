@@ -16,7 +16,7 @@ for first in range(3):
 
     for i in range(1,N):
         for c in range(3):
-            dp[i][c] = min(dp[i-1][k] for k in range(3) if k!=c) + maps[i][c]
+            dp[i][c] = min(dp[i-1][k] for k in range(3) if k!=c) + maps[i][c]  # 이게 기본 RGB
     
     for last in range(3):
         if first==last:
