@@ -55,4 +55,4 @@ else:
 
     print(count)
 
-    #메모리 2*N
+    #메모리 <=2*N
