@@ -22,3 +22,6 @@ for i in range(1,len(N)+1):
 
 
 print(min([min(cols) for cols in dp[len(N)]]))
+
+
+# 이거 일단 dp를 5*5*N로 만들어야 함. 단순히 왼발/오른발 옮기면 안됨 -> 이전 경우 큰거 선택 + 조금 옮기기가 더 쌀수도 있음
