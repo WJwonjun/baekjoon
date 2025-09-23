@@ -28,3 +28,7 @@ for idx in range(len(nums)): #N
             r-=1
 
 print(*result_idx)
+
+
+### 계산 먼저 하고
+### 마지막에 포인터 수정할 것!
