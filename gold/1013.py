@@ -55,4 +55,4 @@ for _ in range(T):
     else: 
         print("YES")
 
-            
+#우하하하
