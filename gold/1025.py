@@ -14,32 +14,33 @@ def is_square(n):
     return root*root==n
 
 ans=-1
-for i in range(1,max(N,M)+1):
-    for start_n in range(0,N):
-        for start_m in range(0,M):
-            for dn in range(-start_n,N-start_n):
-                for dm in range(-start_m,M-start_m):
-                    cur = []
-                    n = start_n
-                    m = start_m
 
-                    if dn==0 and dm==0:
-                        if max(N,M)==1:
-                            cur.append(nums[0][0])
-                        else:
-                            continue
+for start_n in range(0,N):
+    for start_m in range(0,M):
+        for dn in range(-start_n,N-start_n):
+            for dm in range(-start_m,M-start_m):
+                cur = []
+                n = start_n
+                m = start_m
+
+                if dn==0 and dm==0:
+                    if max(N,M)==1:
+                        now = nums[0][0]
+                        if is_square(nums[0][0]):
+                            ans =max(ans,now)
                     else:
-                            cnt=0
-                            while 0<=n<N and 0<=m<M and cnt<i:
-                                cur.append(nums[n][m])
-                                cnt+=1
-                                n+=dn
-                                m+=dm 
+                        continue
 
-                    now = int(''.join(map(str,cur)))
-                    if is_square(now):
-                        ans = max(ans,now)
-                    #print(cur,dn,dm)                      
+                else:
+                        while 0<=n<N and 0<=m<M:
+                            cur.append(nums[n][m])
+                            n+=dn
+                            m+=dm 
+
+                            now = int(''.join(map(str,cur)))
+                            if is_square(now):
+                                ans = max(ans,now)
+                #print(cur,dn,dm)                      
 
 print(ans)
 
