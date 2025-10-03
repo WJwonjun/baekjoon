@@ -26,3 +26,5 @@ while Q:
             nums[i]=-2
 
 print(find_leaf(nums))
+
+#트리는 인덱스순 아닐수도 있다.
