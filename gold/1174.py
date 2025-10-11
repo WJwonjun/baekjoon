@@ -17,10 +17,9 @@ for n in range(0b0000000001,0b1111111111+1):
     for i,w in enumerate(weights):
         bit = ((n>>(9-i))&1)
         if bit!=0:
-            bit*=w
-            result +=str(bit)
+            result +=str(w)
 
     nums.append(int(result))
-    
+
 nums.sort()
 print(nums[N-1])
