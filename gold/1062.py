@@ -20,8 +20,8 @@ elif K>=26:
     print(N)
 
 else:
-    alphabet = [1 << i for i in range(26) if not (essential & 1 << i)]
-    answer = 0
+    alphabet = [1 << i for i in range(26) if not (essential & 1 << i)] # 필수가 아닌 21개의 알파벳
+    answer = 0  
     for comb in combinations(alphabet,K-5):
         know = sum(comb)|essential
         count = 0
