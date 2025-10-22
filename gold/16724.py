@@ -15,7 +15,7 @@ def move(y,x,command):
 maps = [list(input().strip()) for _ in range(N)]
 #print(maps)
 visited = [[False]*M for _ in range(N)]
-# -1 한번도 가본적 없음, 1 가봄, 0 지금 가는중
+
 
 ans=0
 
