@@ -1,5 +1,4 @@
 import sys
-from itertools import product
 input = sys.stdin.readline
 N = int(input())
 def sharp2bit(char):
