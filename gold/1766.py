@@ -31,3 +31,4 @@ while Q:
 print(*ans)
 
 
+#Q보다 heap이 나았을듯
