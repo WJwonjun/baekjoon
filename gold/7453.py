@@ -16,14 +16,14 @@ for a in nums[0]:
     for b in nums[1]:
         ab.append(a + b)
 
-# cd 합의 빈도를 Counter로 저장
+# cd 합의 빈도를 Counter로 저장 -> Hash search
 cd_counter = Counter()
 for c in nums[2]:
     for d in nums[3]:
         cd_counter[c + d] += 1
 
 ans = 0
-for s in ab:
+for s in ab: # O(N^2)
     ans += cd_counter[-s]
 
 print(ans)
