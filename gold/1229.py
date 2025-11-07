@@ -8,7 +8,6 @@ hex = set([1])
 i=2
 while True:
     num = 2*i*i-i
-    #print(hex[-1],(i*2-1),i*6,hex[-1]+i*4+1)
     if (num)>N:
         break
     if num==N:
