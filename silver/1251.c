@@ -15,7 +15,7 @@ int main() {
     for(int k=0;k<50;k++) ans[k]='z';
     ans[50]='\0';
 
-    scanf("%50s", word);
+    scanf("%s", word);
     int len = strlen(word);
 
     char a[51], b[51], c[51], nword[51];
