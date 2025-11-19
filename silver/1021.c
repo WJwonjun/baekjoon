@@ -51,65 +51,52 @@ void pop(QUEUE* q){
     free(delnode);
 }
 
+/*
+ * 1-shot rotate
+ * command == 'l' : 왼쪽으로 n칸 회전
+ * command == 'r' : 오른쪽으로 n칸 회전
+ */
 void rotate(QUEUE* q, char command, int n){
     if (q->len <= 1) return;
 
-    n %= q->len;
+    n %= q->len;            // 한 바퀴 이상 도는 건 줄여줌
     if (n == 0) return;
 
-    if (command == 'l'){   // 왼쪽 회전: head를 앞으로 n칸 이동
-        NODE* new_tail = q->head;
-
-        // 새 tail = head에서 n-1칸 이동한 곳
-        for (int i = 0; i < n - 1; i++)
-            new_tail = new_tail->right;
-
-        NODE* new_head = new_tail->right;
-
-        // 원형으로 연결
-        q->tail->right = q->head;
-        q->head->left = q->tail;
-
-        // 새 head/tail 설정
-        new_head->left = NULL;
-        new_tail->right = NULL;
-
-        q->head = new_head;
-        q->tail = new_tail;
+    // 오른쪽 회전은 "len - n"만큼 왼쪽 회전과 같음
+    if (command == 'r'){
+        n = q->len - n;
     }
 
-    else {  // 오른쪽 회전: head를 뒤로 n칸 이동
-        NODE* new_head = q->tail;
-
-        // 새 head = tail에서 n칸 왼쪽으로 이동한 곳
-        for (int i = 0; i < n; i++)
-            new_head = new_head->left;
-
-        NODE* new_tail = new_head->left;
-
-        // 원형으로 연결
-        q->tail->right = q->head;
-        q->head->left = q->tail;
-
-        // 새 head/tail 설정
-        new_head->left = NULL;
-        new_tail->right = NULL;
-
-        q->head = new_head;
-        q->tail = new_tail;
+    // 여기부터는 "왼쪽으로 n칸 회전"만 구현
+    // 새 tail = head에서 n-1칸 이동한 노드
+    NODE* new_tail = q->head;
+    for (int i = 0; i < n - 1; i++){
+        new_tail = new_tail->right;
     }
+    NODE* new_head = new_tail->right;
+
+    // 일단 원형으로 만들고
+    q->tail->right = q->head;
+    q->head->left = q->tail;
+
+    // 새 head / tail 기준으로 끊기
+    new_head->left = NULL;
+    new_tail->right = NULL;
+
+    q->head = new_head;
+    q->tail = new_tail;
 }
 
 int find(QUEUE* q, int num){
     if (q->len <= 0) return 0;
     int cnt = 0;
     NODE* cur = q->head;
-    while (cur != NULL){
+    while (cur){
         if (cur->item == num) return cnt;
         cur = cur->right;
         cnt++;
     }
-    return -1; // 이론상 안 옴
+    return -1;  // 이론상 오면 안 됨
 }
 
 int main(){
@@ -118,20 +105,19 @@ int main(){
     int ans = 0;
 
     scanf("%d %d", &N, &M);
-
     QUEUE* q = init();
 
-    // ★ 원래 문제는 1..N 이 큐에 들어가야 함
+    // 1 ~ N 넣어야 백준 1021과 매칭됨
     for (int i = 1; i <= N; i++){
         append(q, i);
     }
 
     for (int j = 0; j < M; j++){
         scanf("%d", &num);
-        place = find(q, num);      // 현재 num의 인덱스
+        place = find(q, num);        // 현재 num의 index (0-based)
 
-        int left = place;          // 왼쪽으로 돌리는 횟수
-        int right = q->len - place; // 오른쪽으로 돌리는 횟수
+        int left = place;            // 왼쪽으로 회전할 횟수
+        int right = q->len - place;  // 오른쪽으로 회전할 횟수
 
         if (left <= right){
             rotate(q, 'l', left);
@@ -141,7 +127,7 @@ int main(){
             ans += right;
         }
 
-        pop(q); // 맨 앞 원소 꺼냄
+        pop(q); // 맨 앞 원소 제거
     }
 
     printf("%d", ans);
