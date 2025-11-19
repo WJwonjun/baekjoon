@@ -27,21 +27,16 @@ else:
 
         for slope in range(K[1]//K[0], K[1]//K[0]+2):  
             find = 1      
-            for i in range(len(K)-1):
-                if K[i]*slope!=K[i+1]:
+            b = Y[1]-Y[0]*slope
+            for i in range(len(Y)-1):
+                if Y[i]*slope+(b)!=Y[i+1]:
                     find = 0
 
             if find==1:
-                b = Y[1]-Y[0]*slope
                 break
 
         else:
             print('B')
             sys.exit(0)
 
-        for i in range(N-1):
-            if Y[i]*slope+b!=Y[i+1]:
-                print('B')
-                sys.exit(0)
-        
         print(Y[-1]*slope+b)
