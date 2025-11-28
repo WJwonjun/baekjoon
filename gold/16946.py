@@ -7,8 +7,6 @@ maps = []
 for i in range(N):
     maps.append( list(map(int,list(input().strip()))))
 
-
-ways = [[0]*M for _ in range(N)]
 kv = dict()
 id=2
 for i in range(N):
@@ -28,8 +26,7 @@ for i in range(N):
                             maps[ny][nx]=id
                             cnt+=1
 
-            ways[i][j] = cnt%10
-            kv[id] = ways[i][j]
+            kv[id] = cnt%10
             id+=1
 
 
