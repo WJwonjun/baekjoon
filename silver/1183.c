@@ -18,12 +18,10 @@ void merge(long long int list[], long long int sorted[], int left, int mid, int 
         sorted[k++] = list[i++];
     }
 
-    // Copy remaining elements of the right half
     while (j <= right) {
         sorted[k++] = list[j++];
     }
 
-    // Copy back to original array
     for (i = left; i <= right; i++) {
         list[i] = sorted[i];
     }
