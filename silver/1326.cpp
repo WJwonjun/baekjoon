@@ -1,7 +1,6 @@
 #include <iostream>
 #include <tuple>
 #include <queue>
-#include <set>
 #include <vector>
 
 using namespace std;
@@ -20,31 +19,32 @@ int main(){
     }
 
     queue<tuple<int, int>> q1;
-    set<int> s;
-    s.insert(a);
+    vector<bool> visited(N + 1, false);
+
+    visited[a]=true;
     q1.push({a,0});
 
     while(q1.empty()==false){
-        auto[brid,cnt] = q1.front();
+        auto[cur,cnt] = q1.front();
         q1.pop();
-        if(brid==b) {
+        if(cur==b) {
             cout << cnt << endl;
             return 0;
         }
-        int jump = bridge[brid-1];
-        for(int i=brid-jump;i>0;i-=jump){
-            if(s.count(i)==0) {
-                q1.push({i,cnt+1});
-                s.insert(i);
-            }
-        }
-        for(int i=brid+jump;i<=N;i+=jump){
-            if(s.count(i)==0) {
-                q1.push({i,cnt+1});
-                s.insert(i);
+        int jump = bridge[cur-1];
+        for(int next = cur + jump; next <= N; next += jump){
+            if(!visited[next]) {
+                visited[next] = true;
+                q1.push({next, cnt + 1});
             }
         }
 
+        for(int next = cur - jump; next >= 1; next -= jump){
+            if(!visited[next]) {
+                visited[next] = true;
+                q1.push({next, cnt + 1});
+            }
+        }
     }
     cout << -1 << endl;
 }
