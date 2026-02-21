@@ -1,100 +1,67 @@
 #include <iostream>
 #include <vector>
-#include <set>
 using namespace std;
 
-int parent[3001];
-int cnt[3001];
-
-
-struct Point {
-    int x, y;
-    // 좌표 비교를 위한 연산자 오버로딩 (일직선 겹침 확인용)
-    bool operator<=(const Point& other) const {
-        if (x == other.x) return y <= other.y;
-        return x <= other.x;
-    }
+struct point{
+	int x,y;
+	point(int _x, int _y): x(_x),y(_y){}
 };
 
-
-struct Line {
-    Point p1, p2;
-};
-
-int find(int i){
-	if(parent[i]==i) return i;
-	return parent[i] = find(parent[i]);
+int ccw(point a, point b, point c) {
+    int val = (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
+    if (val > 0) return 1;   // 반시계
+    if (val < 0) return -1;  // 시계
+    return 0;                // 일직선
 }
 
-void unite(int i, int j){
-	int iroot = find(i);
-	int jroot = find(j);
-	if(iroot!=jroot){
-		parent[iroot] = jroot;
-		cnt[jroot] +=cnt[iroot];
-	}
-}
+struct line{
+	point p1,p2;
+	int root;
+	int cnt = 1;
 
-int ccw(Point a, Point b, Point c) {
-    long long res = (a.x * b.y + b.x * c.y + c.x * a.y) - (b.x * a.y + c.x * b.y + a.x * c.y);
-    if (res > 0) return 1;
-    if (res < 0) return -1;
-    return 0;
-}
+	line(point a, point b, int num): p1(a), p2(b), root(num) {}
 
-bool check(Point a, Point b, Point c, Point d) {
-    int abc = ccw(a, b, c);
-    int abd = ccw(a, b, d);
-    int cda = ccw(c, d, a);
-    int cdb = ccw(c, d, b);
+	bool isIntersect(line other) {
+        int res1 = ccw(p1, p2, other.p1) * ccw(p1, p2, other.p2);
+        int res2 = ccw(other.p1, other.p2, p1) * ccw(other.p1, other.p2, p2);
 
-    if (abc * abd == 0 && cda * cdb == 0) {
-        // 선분의 방향을 작은 점 -> 큰 점 순으로 정렬
-        if (b <= a) swap(a, b);
-        if (d <= c) swap(c, d);
-        
-        // 겹침 판별
-        return c <= b && a <= d;
+        if (res1 <= 0 && res2 <= 0) {
+           
+            if (res1 == 0 && res2 == 0) {
+
+                pair<int, int> l1_x = {min(p1.x, p2.x), max(p1.x, p2.x)};
+                pair<int, int> l1_y = {min(p1.y, p2.y), max(p1.y, p2.y)};
+                pair<int, int> l2_x = {min(other.p1.x, other.p2.x), max(other.p1.x, other.p2.x)};
+                pair<int, int> l2_y = {min(other.p1.y, other.p2.y), max(other.p1.y, other.p2.y)};
+
+                return l1_x.first <= l2_x.second && l2_x.first <= l1_x.second &&
+                       l1_y.first <= l2_y.second && l2_y.first <= l1_y.second;
+            }
+            return true; // 일반적인 교차 상황
+        }
+        return false; // 만나지 않음
     }
-    return (long long)abc * abd <= 0 && (long long)cda * cdb <= 0;
-}
+};
 
 
 int main() {
 	// 코드 작성
 	int N;
-	vector<Line> linelist;
-
 	cin >> N;
+	vector<line> linelist;
 
 	for(int i=0;i<N;i++){
-		cnt[i] = 1;
-		parent[i] = i;
 		int x1,y1,x2,y2;
 		cin >> x1 >> y1 >> x2 >> y2;
-		Point p1 = {x1,y1};
-		Point p2 = {x2,y2};
-		Line newline = {p1,p2};
-		linelist.push_back(newline);
-		for(int j=0;j<i;j++){
-			if(check(linelist[j].p1,linelist[j].p2,newline.p1,newline.p2)){
-				unite(j,i);
-			}
+		linelist.push_back(line(point(x1,y1),point(x2,y2),i));
+		
+		
+		
 
-		}
 	}
 
-	int group = 0, max_num = -1;
-	for(int i=0;i<N;i++){
-		if(parent[i]==i){
-			group++;
-			if(cnt[i]>max_num) max_num = cnt[i];
-		}
-		// cout << parent[i] << endl;
-		// cout << cnt[i] << endl;
-	}
 
-	cout << group << endl;
-	cout << max_num << endl;
+	cout << ans << endl;
+	cout << max(cnt) << endl;
 	return 0;
 }
